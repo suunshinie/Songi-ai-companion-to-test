@@ -1,0 +1,595 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User sanctuary profile and privacy settings isolated per authenticated user UID.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID owning this profile",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User-chosen display name or Anonymous Sanctuary Guest",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "authMethod": {
+          "type": "string",
+          "enum": ["anonymous", "google", "email"],
+          "description": "Authentication provider used to sign in"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether the account email is verified"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["en", "bn"],
+          "description": "UI language preference"
+        },
+        "proactiveCheckins": {
+          "type": "boolean",
+          "description": "Consent toggle for optional gentle evening check-in reminders"
+        },
+        "ephemeralMode": {
+          "type": "boolean",
+          "description": "Toggle for local-first ephemeral chat drafts"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last-updated timestamp"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "authMethod",
+        "emailVerified",
+        "preferredLanguage",
+        "proactiveCheckins",
+        "ephemeralMode",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PublicProfile": {
+      "title": "PublicProfile",
+      "description": "Zero-PII discoverable peer profile for Find Your People recommendations.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "bio": {
+          "type": "string",
+          "maxLength": 280
+        },
+        "avatarTone": {
+          "type": "string",
+          "enum": ["sage", "terracotta", "navy", "sand"]
+        },
+        "avatarInitials": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4
+        },
+        "statusTags": {
+          "type": "array"
+        },
+        "interests": {
+          "type": "array"
+        },
+        "availability": {
+          "type": "string",
+          "enum": ["available", "open_to_requests", "not_accepting", "taking_a_break"]
+        },
+        "preferredFeedVisibility": {
+          "type": "string",
+          "enum": ["community", "private"]
+        },
+        "showOnlineStatus": {
+          "type": "boolean"
+        },
+        "isOnline": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "bio",
+        "avatarTone",
+        "avatarInitials",
+        "statusTags",
+        "interests",
+        "availability",
+        "preferredFeedVisibility",
+        "showOnlineStatus",
+        "isOnline",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserBlock": {
+      "title": "UserBlock",
+      "description": "Blocked user entry owned by the blocking user.",
+      "type": "object",
+      "properties": {
+        "blockerUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "targetUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "targetName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["blockerUid", "targetUid", "targetName", "createdAt", "updatedAt"]
+    },
+    "UserNotification": {
+      "title": "UserNotification",
+      "description": "In-app notification for peer requests, acceptances, and messages.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "recipientUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "senderUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["peer_request", "request_accepted", "request_declined", "peer_message", "feed_support"]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 280
+        },
+        "relatedId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "read": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "recipientUid",
+        "senderUid",
+        "type",
+        "title",
+        "body",
+        "read",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ApprovedMemory": {
+      "title": "ApprovedMemory",
+      "description": "User-ratified context memory explicitly approved for AI Companion personalization.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "meta": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "isNew": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "text",
+        "meta",
+        "isNew",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "Private user journal entry with AI-Lock flag.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "dateLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "banglaDateLabel": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "relativeTimeLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "mood": {
+          "type": "string",
+          "enum": ["Calm", "Heavy", "Hopeful", "Restless"]
+        },
+        "tags": {
+          "type": "array",
+          "description": "Up to 8 short topical tags"
+        },
+        "aiLocked": {
+          "type": "boolean"
+        },
+        "updatedAtLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "dateLabel",
+        "relativeTimeLabel",
+        "title",
+        "body",
+        "mood",
+        "tags",
+        "aiLocked",
+        "updatedAtLabel",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PeerRequest": {
+      "title": "PeerRequest",
+      "description": "Consensual peer conversation request with terminal status enforcement.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "senderUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "senderName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "senderAvatarTone": { "type": "string", "enum": ["sage", "terracotta", "navy", "sand"] },
+        "senderTags": { "type": "array" },
+        "recipientUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "recipientName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "recipientAvatarTone": { "type": "string", "enum": ["sage", "terracotta", "navy", "sand"] },
+        "recipientTags": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined", "cancelled", "blocked"] },
+        "introMessage": { "type": "string", "maxLength": 500 },
+        "sharedContextSummary": { "type": "string", "maxLength": 200 },
+        "ignoredByRecipient": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "senderUid",
+        "senderName",
+        "senderAvatarTone",
+        "senderTags",
+        "recipientUid",
+        "recipientName",
+        "recipientAvatarTone",
+        "recipientTags",
+        "status",
+        "introMessage",
+        "sharedContextSummary",
+        "ignoredByRecipient",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PeerConversation": {
+      "title": "PeerConversation",
+      "description": "Active peer chat room created only when a conversation request is accepted.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantUids": { "type": "array" },
+        "participantNames": { "type": "object" },
+        "participantTones": { "type": "object" },
+        "requestId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "status": { "type": "string", "enum": ["active", "ended"] },
+        "endedByUid": { "type": "string", "maxLength": 128 },
+        "lastMessagePreview": { "type": "string", "maxLength": 180 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "participantUids",
+        "participantNames",
+        "participantTones",
+        "requestId",
+        "status",
+        "lastMessagePreview",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PeerMessage": {
+      "title": "PeerMessage",
+      "description": "Message inside an accepted peer conversation.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "conversationId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantUids": { "type": "array" },
+        "senderUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "senderName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "conversationId",
+        "participantUids",
+        "senderUid",
+        "senderName",
+        "text",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "FeedPost": {
+      "title": "FeedPost",
+      "description": "User-authored SHONGI community or private reflection post.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "authorAvatarTone": { "type": "string", "enum": ["sage", "terracotta", "navy", "sand"] },
+        "postType": { "type": "string", "enum": ["mood", "thought", "story", "study_life"] },
+        "mood": { "type": "string", "maxLength": 40 },
+        "title": { "type": "string", "maxLength": 160 },
+        "body": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "tags": { "type": "array" },
+        "visibility": { "type": "string", "enum": ["community", "private"] },
+        "reactionCounts": { "type": "object" },
+        "commentCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "authorUid",
+        "authorName",
+        "authorAvatarTone",
+        "postType",
+        "body",
+        "tags",
+        "visibility",
+        "reactionCounts",
+        "commentCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "FeedReaction": {
+      "title": "FeedReaction",
+      "description": "Supportive non-competitive user reaction per post.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "postId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "reactionType": { "type": "string", "enum": ["hear_you", "sending_support", "relatable", "you_got_this"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "postId", "reactionType", "createdAt", "updatedAt"]
+    },
+    "FeedComment": {
+      "title": "FeedComment",
+      "description": "Supportive comment on a community post.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "postId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "body": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "postId", "authorUid", "authorName", "body", "createdAt", "updatedAt"]
+    },
+    "ModerationReport": {
+      "title": "ModerationReport",
+      "description": "Confidential safety or abuse report submitted by an authenticated user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "reporterUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "targetType": { "type": "string", "enum": ["user", "post", "comment", "conversation"] },
+        "targetId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "targetUid": { "type": "string", "maxLength": 128 },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "details": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "reporterUid", "targetType", "targetId", "reason", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private sanctuary profile and consent preferences owned strictly by userId."
+    },
+    "/users/{userId}/memories/{memoryId}": {
+      "schema": { "$ref": "#/entities/ApprovedMemory" },
+      "description": "Approved AI Companion memories scoped under the owning user profile."
+    },
+    "/users/{userId}/journal/{entryId}": {
+      "schema": { "$ref": "#/entities/JournalEntry" },
+      "description": "Private personal journal entries scoped under the owning user profile."
+    },
+    "/users/{userId}/blocks/{targetUid}": {
+      "schema": { "$ref": "#/entities/UserBlock" },
+      "description": "Blocked user records scoped under the owning user profile."
+    },
+    "/users/{userId}/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/UserNotification" },
+      "description": "In-app notifications scoped under the recipient user profile."
+    },
+    "/publicProfiles/{userId}": {
+      "schema": { "$ref": "#/entities/PublicProfile" },
+      "description": "Zero-PII discoverable peer profile for Find Your People recommendations."
+    },
+    "/peerRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/PeerRequest" },
+      "description": "Consensual peer conversation requests between two users."
+    },
+    "/peerConversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/PeerConversation" },
+      "description": "Accepted peer conversation metadata."
+    },
+    "/peerConversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/PeerMessage" },
+      "description": "Peer messages inside an accepted conversation."
+    },
+    "/feedPosts/{postId}": {
+      "schema": { "$ref": "#/entities/FeedPost" },
+      "description": "SHONGI community and author-private reflection posts."
+    },
+    "/feedPosts/{postId}/reactions/{userId}": {
+      "schema": { "$ref": "#/entities/FeedReaction" },
+      "description": "Supportive reactions per post."
+    },
+    "/feedPosts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/FeedComment" },
+      "description": "Supportive comments on community posts."
+    },
+    "/moderationReports/{reportId}": {
+      "schema": { "$ref": "#/entities/ModerationReport" },
+      "description": "Confidential user/content moderation reports."
+    }
+  }
+}

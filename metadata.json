@@ -1,0 +1,6 @@
+{
+  "name": "SHONGI (সঙ্গী) — Safe Haven & Everyday Companion",
+  "description": "A calm, bilingual (English & Bangla) companion platform featuring private AI reflection with explicit memory consent, an encrypted local journal, vetted peer support, and verified Bangladesh crisis resources.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
